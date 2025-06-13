@@ -1,15 +1,4 @@
 (function () {
-  const CONFIG = {
-    minSearchLength: 3,
-    debounceTime: 300,
-    api: {
-      shcode: "SH-251914",
-      cluster: "v3",
-      anonymous: "c063e8d2-d690-44d7-869f-15ca07bf9555",
-      resultsSize: 10,
-    },
-  };
-
   let stylesInjected = false;
   let currentInstance = null;
 
@@ -37,7 +26,7 @@
   }
 
   function createSmartHintSearch(containerId = 'smarthint-search') {
-  
+
     if (currentInstance) {
       currentInstance.cleanup();
     }
@@ -50,6 +39,18 @@
       target.id = containerId;
       document.body.insertBefore(target, document.body.firstChild);
     }
+
+    // Leer configuración desde atributos de datos
+    const CONFIG = {
+      minSearchLength: parseInt(target.dataset.minSearchLength) || 3,
+      debounceTime: parseInt(target.dataset.debounceTime) || 300,
+      api: {
+        shcode: target.dataset.shcode || "SH-251914",
+        cluster: target.dataset.cluster || "v3",
+        anonymous: target.dataset.anonymous || "c063e8d2-d690-44d7-869f-15ca07bf9555",
+        resultsSize: parseInt(target.dataset.resultsSize) || 10,
+      },
+    };
 
     const DOM = { target, input: null, results: null };
     const uniqueId = `smart-hint-${Date.now()}`;
